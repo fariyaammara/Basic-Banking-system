@@ -1,0 +1,91 @@
+<html>
+<head>
+<title>Add Customer</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css"  href="http://localhost:8000/bank_style.css">
+</head>
+    <body>
+        <form class="box"method="POST">
+            <div class="header">
+                <div class="container">
+                    <h2 style="text-align: center;">Create Customer</h2>
+                    <div class="form-group-row">
+                    <div class="form-control">
+                    <label>Email</label>
+                    <input type="email" id="email_id"></input>
+                    <div class="form-control">
+                    <label>Full Name</label>
+                    <input type="text" id="fname"></input>
+                    </div>
+                    <div class="form-control">
+                    <label>Current Balance</label>
+                    <input type="number" id="get_bal"></input>
+                    </div>
+                    <div class="form-control">
+                    <label>Age</label>
+                    <input type="number" id="get_age"></input>
+                    </div>
+                    <br>
+                    <div class="rad">
+                        <input type="radio" id="male" name="gender" value="M">
+                        <label for="male">Male</label><br>
+                        <input type="radio" id="female" name="gender" value="F">
+                        <label for="female">Female</label><br>
+                        <input type="radio" id="other" name="gender" value="O">
+                        <label for="other">Other</label>
+                    </div>
+                    <button type="button" id="btn_register">Add User</button>
+                    <br>
+                    <br>
+                    <button type="button" id="home" onclick="get_to_login()">Home</button>
+                    </div>
+                    </div>
+                    </div>
+                    </form>
+                    <script>
+                    function  get_to_login(){
+	                window.location.assign("http://www.localhost:8000/Home_bank.html");
+                    }
+                    $("#btn_register").click(function(event){
+                    event.preventDefault();
+                    var reg_email=$("#email_id").val();
+                    var reg_fname=$("#fname").val();
+                    console.log("ffffff",reg_fname)
+                    var reg_bal=$("#get_bal").val();
+                    var reg_age=$("#get_age").val();
+                    var reg_gender=$("input[name='gender']:checked").val();
+                    console.log("ggggggg",reg_gender)
+                    var getter={
+                        "email": reg_email,
+                        "name": reg_fname,
+                        "age": reg_age,
+                        "gender": reg_gender,
+                        "amount": reg_bal
+                    };
+                    var obj=JSON.stringify(getter);
+                    $.ajax({
+                            type:"POST",
+                            url:"http://localhost:5003/api/v1/User_Account/Create",
+                            contentType: "application/json",
+                            dataType:'json',
+                            data: obj,
+                            success: function(response){
+                            alert(response.Message);
+                            if((response.Message)=="Successfully Registered!"){
+                                alert(response.Message)
+                            }
+                            },
+                            error: function(error) {
+                                alert("hhii",error.status);
+                                }
+                            
+                    });
+                }) 
+                    </script>
+    </body>
+</html>

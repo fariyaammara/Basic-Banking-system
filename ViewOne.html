@@ -1,0 +1,151 @@
+<html>
+<head>
+<title>View Customer</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css"  href="http://localhost:8000/bank_style.css">
+</head>
+    <body>
+        <form class="box"method="POST">
+            <div class="header">
+                <div class="container">
+                    <h2 style="text-align: center;padding-top: 10%px">View Constumer Details</h2>
+                    <div class="form-group-row">
+                    <div class="form-control">
+                        <div id="your">
+                        <label style="display: inline-block;width: 100%;display: inline-block;margin-bottom: 5px;font-size: 20px;">
+                            <select id="User_list_from"  name="Select User" >
+                                    <option value="">--Please choose an option--</option>
+                            </select>
+                        </label>
+                    </div> 
+                    <label>Email</label>
+                    <input type="email" id="email_id" autocomplete="on"></input>
+                    <div class="form-control">
+                    <label>Full Name</label>
+                    <input type="input" id="fname"  autocomplete="on"></input>
+                    </div>
+                    <div class="form-control">
+                    <label>Current Balance</label>
+                    <input type="input" id="get_bal"  autocomplete="on"></input>
+                    </div>
+                    <div class="form-control">
+                    <label>Age</label>
+                    <input type="number" id="get_age"  autocomplete="on" ></input>
+                    </div>
+                    <br>
+                    <!--
+                    <div class="rad">
+                        <input type="radio" id="male" name="gender"  autocomplete="on" value="M">
+                        <label for="male">Male</label><br>
+                        <input type="radio" id="female" name="gender"  autocomplete="on" value="F">
+                        <label for="female">Female</label><br>
+                        <input type="radio" id="other" name="gender"   autocomplete="on" value="O">
+                        <label for="other">Other</label>
+                    </div>
+                -->
+                    <br>
+                    <button type="button" id="home">Home</button>
+                    </div>
+                    </div>
+                    </div>
+                    </form>
+                    <script>
+                         $(document).ready(function() {
+                        $("home").click(function(){
+                            window.location.assign("http://www.localhost:8000/Home_bank.html");
+                        });
+                    //$("#User_list_from").ready(function()
+                     let dropdownfrom = $('#User_list_from');
+
+                    dropdownfrom.empty();
+
+                    const url = 'http://localhost:5003/api/v1/User_Account/Users_list';
+
+                    $.getJSON(url, function (data) {
+                        dropdownfrom.append($('<option>Select your choice</option>').attr('value', "Select User"));
+                    $.each(data, function (key, entry) {
+                        dropdownfrom.append($('<option>Select your choice</option>').attr('value', entry.abbreviation).text(entry.name));
+                        $('select>option:eq(3)').prop('selected', true);
+                    })
+                    });
+                    //function func_foruser(){
+                        $("#User_list_from").click(function(){
+                         //my_user=$("#User_list_from option:selected").val();
+                         //var my_user = $('#User_list_from').find(":selected").text();
+                         $('select#User_list_from').change(function() {
+                        var my_user= $(this).find('option:selected').val();
+                        console.log(my_user);
+                        $.ajax({
+                        url: "http://localhost:5003/api/v1/User_Account/Users/"+my_user,
+                        success: function(data){
+                        for(x in data){
+                            for(y in x){
+                                console.log("yess")
+                        var age_fetch=data[y].age;
+                        var name_fetch=data[y].name;
+                        var email_fetch=data[y].email;
+                        var balance_fetch=data[y].current_balance;
+                        var gender_fetch=data[y].gender;
+                            }
+                        }            
+                       
+                        $('#User_list_from').on('click', function(){
+                                        $('#get_age').val(age_fetch);
+                                    })
+                        $('#User_list_from').on('click', function(){
+                            $('#fname').val(name_fetch);
+                        })
+                        $('#User_list_from').on('click', function(){
+                            $('#email_id').val(email_fetch);
+                        })
+                        $('#User_list_from').on('click', function(){
+                            $('#get_bal').val(balance_fetch);
+                        })
+
+                        /*$('#User_list_from option:selected').click(function(){
+                        $('div > select').val(this.value);
+                        })*/
+                        /*$('#User_list_from').on('change', function(){
+                            console.log("hii")
+                            $('#gender').val(gender_fetch);
+                            var $radios = $('input:radio[name=gender]');
+                            if($radios.is(':checked') === gender_fetch) {
+                                $("#radio").prop("checked", true);
+                            }
+                        })*/
+            //for(x in data){
+            //get_email+=$("#email").append(data[x].email).append("<br>");
+            //console.log(data["email"])
+            //get_name+=$("#fname").append(data[x].name).append("<br>");
+            //get_bal+=$("#avaliable_balance").append(data[x].current_balance).append("<br>");
+            //get_age+=$("#age").append(data[x].age).append("<br>");
+            //get_gender+=$("#gender").append(data[x].gender).append("<br>");
+            //$('#customers').append(student)
+            //document.getElementById("#get_email").innerHTML=data[x].email;
+            },
+            error:function(){
+            alert("error occured");
+            }
+            });
+        })
+                        })
+                   /* $(++++++++++document).ready(function(){
+    $("select.country").change(function(){
+        var selectedCountry = $(this).children("option:selected").val();
+        alert("You have selected the country - " + selectedCountry);
+    });*/
+                    
+                    //var get_pwd=$("#pwd").val();
+                        
+                        });
+                    
+                       
+
+                    </script>
+    </body>
+</html>

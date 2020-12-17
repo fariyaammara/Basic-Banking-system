@@ -1,0 +1,98 @@
+<html>
+<head>
+<title>Transfer Amount</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css"  href="http://localhost:8000/bank_style.css">
+</head>
+    <body style="align-items: center;justify-content: center;display: flex;">
+        <form class="box"method="POST">
+            <div class="header">
+                <div class="container-fluid">
+                    <h2 style="text-align: center;">Transfer Amount</h2>
+                    <div class="form-group-row">
+                    <div class="form-control">
+                    <label>From</label>
+                    <br>
+                    <label style="display: inline-block;width: 100%;display: inline-block;margin-bottom: 5px;font-size: 20px;"><select id="User_list_from" name="From"></select></label>
+                    <div class="form-control">
+                            <label>To</label>
+                            <br>
+                            <label style="display: inline-block;width: 100%;display: inline-block;margin-bottom: 5px;font-size: 20px;"><select id="User_list_to" name="To"></select></label>
+                    <label>Amount to be transferred</label>
+                    <input type="number" id="get_amt"></input>
+                    </div>
+                    <button type="button" id="btn_transfer">Transfer Amount</button>
+                    <br>
+                    <br>
+                    <button type="button" id="home" onclick="get_to_login()">Home</button>
+                    </div>
+                    </div>
+                    </div>
+                    </form>
+                    <script>
+                    function  get_to_login(){
+	                window.location.assign("http://www.localhost:8000/Home_bank.html");
+                    }
+                    $("#btn_transfer").click(function(event){
+                    event.preventDefault();
+                    var fromaddr=$("#User_list_from").val();
+                    console.log("eeeeeee",fromaddr);
+                    var toaddr=$("#User_list_to").val();
+                    console.log("eeeeeee",toaddr);
+                    var amt_transfer=parseInt($("#get_amt").val());
+                    console.log("TTTTtt",amt_transfer)
+                    var getter={
+                        "to_name": toaddr,
+                        "from_name": fromaddr,
+                        "update": {
+                            "amnt_added": amt_transfer
+                            }
+                      };
+                    var obj=JSON.stringify(getter);
+                    $.ajax({
+                            type:"PUT",
+                            url:"http://localhost:5003/api/v1/User_Account/Update/Transaction",
+                            contentType: "application/json",
+                            dataType:'json',
+                            data: obj,
+                            success: function(response){
+                            alert(response.Message);
+                            if((response.Message)=="Transaction successful"){
+                                alert(response.Message)
+                            }
+                            },
+                            error: function(error) {
+                                alert("hhii",error.status);
+                                }
+                            
+                    });
+                }) 
+                let dropdownfrom = $('#User_list_from');
+                let dropdownto=$("#User_list_to")
+
+                dropdownfrom.empty();
+                dropdownto.empty();
+
+                dropdownfrom.append('<option selected="true" disabled>Select User</option>');
+                dropdownfrom.prop('selectedIndex', 0);
+                dropdownto.append('<option selected="true" disabled>Select User</option>');
+                dropdownto.prop('selectedIndex', 0);
+
+                const url = 'http://localhost:5003/api/v1/User_Account/Users_list';
+
+                // Populate dropdownfrom with list of provinces
+                $.getJSON(url, function (data) {
+                $.each(data, function (key, entry) {
+                    dropdownfrom.append($('<option></option>').attr('value', entry.abbreviation).text(entry.name));
+                    dropdownto.append($('<option></option>').attr('value', entry.abbreviation).text(entry.name));
+                })
+                });
+                    </script>
+    </body>
+</html>

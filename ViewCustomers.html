@@ -1,0 +1,67 @@
+<html>
+<head>
+<title>View All Customers</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css"  href="http://localhost:8000/bank_style.css">
+</head>
+<body class="container-fluid">
+<h1>View All Customer Details</h1>
+<button class="btn btn-primary" style="float: right;padding-right: 20px;background-color: blanchedalmond;position: relative;right: 0;left: 0;"><a href="http://localhost:8000/Home_bank.html">Home</a></button>
+<div class="container-fluid">
+    <div class="row">
+    <table class="table table-striped">
+        <div class="col-md-3">
+    <h3>Email</h3>
+    <p id="email" style="font-size: larger;"></p>
+    </div>
+    <div class="col-md-2">
+    <h3>Full Name</h3>
+    <p id="fname" style="font-size: larger;"></p>
+    </div>
+    <div class="col-md-3">
+    <h3>Age</h3>
+    <p id="age" style="font-size: larger;"></p>
+    </div>
+    <div class="col-md-4">
+    <h3>Available Balance</h3>
+    <p id="avaliable_balance" style="font-size: larger;"></p>
+    </div>
+    </table>
+    </div>
+    </div>
+<script>
+    $(document).ready(function(){
+        $.ajax({
+            url: "http://localhost:5003/api/v1/User_Account/Users/getAll",
+            success: function(data){
+            var get_email=new Array();
+            var get_name=new Array();
+            var get_bal=new Array();
+            var get_age=new Array();
+            //var get_gender=new Array();
+            for(x in data){
+            //alert(data[x].email);
+            get_email+=$("#email").append(data[x].email).append("<br>");
+            get_name+=$("#fname").append(data[x].name).append("<br>");
+            get_bal+=$("#avaliable_balance").append(data[x].current_balance).append("<br>");
+            get_age+=$("#age").append(data[x].age).append("<br>");
+            //get_gender+=$("#gender").append(data[x].gender).append("<br>");
+            //$('#customers').append(student)
+            //document.getElementById("#get_email").innerHTML=data[x].email;
+            }
+            },
+            error:function(){
+            alert("error occured");
+            }
+            });
+            });
+</script>
+</body>
+</html>
+</body>
+</html>
